@@ -20,6 +20,12 @@ many changes to a program independently, and Aegis coordinates
 integrating these changes back into the master source of the program,
 with as little disruption as possible.
 
+%description -l pl
+Aegis jest transakcyjnie dzia³aj±cym programem do zarz±dzania
+konfiguracj±. Daje ¶rodowisko w którym za³oga developerów mo¿e
+pracowaæ nad wieloma zmianami w programie niezale¿nie, a Aegis
+koordynuje integracjê tych zmian w g³ówne ¼ród³a programu.
+
 %prep
 %setup -q
 %patch -p1
@@ -42,8 +48,10 @@ rm -rf $RPM_BUILD_ROOT%{_datadir}/aegis/man1
 rm -rf $RPM_BUILD_ROOT%{_datadir}/aegis/en
 rm -f lib/en/html/.mkdir*
 
-gzip -9nf lib/en/{*.{txt,ps},notes/locale.man} README \
-	$RPM_BUILD_ROOT%{_mandir}/man{1,5}/*
+gzip -9nf lib/en/{*.{txt,ps},notes/locale.man} README
+
+%clean
+rm -rf $RPM_BUILD_ROOT
 
 %pre
 %{_sbindir}/groupadd -g 65 aegis
@@ -54,9 +62,6 @@ if [ $1 = 0 ] ; then
 	%{_sbindir}/userdel aegis
 	%{_sbindir}/groupdel aegis
 fi
-
-%clean
-rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
