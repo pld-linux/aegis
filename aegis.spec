@@ -106,7 +106,7 @@ rm -rf $RPM_BUILD_ROOT
 
 /usr/lib/aegis/en/LC_MESSAGES/*
 /usr/share/aegis/en/html/*
-/usr/man/man[15]/*
+%{_mandir}/man[15]/*
 
 /usr/share/aegis/en/notes/locale.man
 /usr/share/aegis/profile
