@@ -9,7 +9,7 @@ URL:		http://www.canb.auug.org.au/~millerp/aegis.html
 Icon:		aegis.gif
 Source:		http://www.canb.auug.org.au/~millerp/%{name}-%{version}.tar.gz
 Patch:		aegis-ugid.patch
-BuildRoot:	/tmp/%{name}-%{version}-root
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 Aegis is a transaction-based software configuration management system.
