@@ -136,16 +136,3 @@ rm -rf $RPM_BUILD_ROOT
 #%attr(0644,root,root) %{_datadir}/aegis/en/faq.dvi
 #%attr(0644,root,root) %{_datadir}/aegis/en/refman.dvi
 #%attr(0644,root,root) %{_datadir}/aegis/en/user-guide.dvi
-
-%changelog
-* Fri Apr  2 1999 Micha³ Kuratczyk <kura@pld.org.pl>
-  [3.12-2]
-  (based on spec by anonymous)
-- added Group(pl)
-- sloted BuildRoot into PLD standard
-- added %changelog
-- added %defattr(644,root,root,755)
-- simplifications in %files
-- root instead bin group on files
-- added -q %setup parameter
-- commented Icon (not available)
