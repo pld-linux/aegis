@@ -1,0 +1,2170 @@
+--- aegis-3.18/Makefile.in	Thu Jul  8 22:36:21 1999
++++ aegis-3.18.new/Makefile.in	Sat Mar 22 18:02:26 2003
+@@ -381,7 +381,9 @@
+ 	$(CC) $(CFLAGS) -Iaefind -Ilibaegis -Icommon -c aefind/cmdline.gen.c
+ 	mv cmdline.gen.$(OBJEXT) $@
+ 
+-aefind/cmdline.gen.c aefind/cmdline.gen.h: aefind/cmdline.y
++aefind/cmdline.gen.h: aefind/cmdline.gen.c
++
++aefind/cmdline.gen.c: aefind/cmdline.y
+ 	@echo Expect 5 shift/reduce, 23 reduce/reduce conflicts.
+ 	$(YACC) -d aefind/cmdline.y
+ 	sed -e 's/[yY][yY]/cmdline_/g' y.tab.c > aefind/cmdline.gen.c
+@@ -1704,7 +1706,9 @@
+ 	$(CC) $(CFLAGS) -Icommon -Ilibaegis -Icommon -c common/gettime.gen.c
+ 	mv gettime.gen.$(OBJEXT) $@
+ 
+-common/gettime.gen.c common/gettime.gen.h: common/gettime.y
++common/gettime.gen.h:	common/gettime.gen.c
++
++common/gettime.gen.c: common/gettime.y
+ 	@echo Expect 8 shift/reduce conflicts.
+ 	$(YACC) -d common/gettime.y
+ 	sed -e 's/[yY][yY]/gettime_/g' y.tab.c > common/gettime.gen.c
+@@ -1803,8 +1807,8 @@
+ 		common/str_list.h common/str.h common/ac/stddef.h \
+ 		common/config.h common/config.messy.h common/ac/stdarg.h \
+ 		common/main.h
+-	$(CC) $(CFLAGS) -Icommon -Ilibaegis -Icommon -c common/str_list/quote.c
+-	mv quote.$(OBJEXT) $@
++	$(CC) $(CFLAGS) -Icommon -Ilibaegis -Icommon -o quote1.$(OBJEXT) -c common/str_list/quote.c
++	mv quote1.$(OBJEXT) $@
+ 
+ common/stracc.$(OBJEXT): common/stracc.c common/mem.h common/ac/stddef.h \
+ 		common/config.h common/config.messy.h common/main.h \
+@@ -1913,7 +1917,9 @@
+ 	$(CC) $(CFLAGS) -Ifmtgen -Ilibaegis -Icommon -c fmtgen/parse.gen.c
+ 	mv parse.gen.$(OBJEXT) $@
+ 
+-fmtgen/parse.gen.c fmtgen/parse.gen.h: fmtgen/parse.y
++fmtgen/parse.gen.h: fmtgen/parse.gen.c
++
++fmtgen/parse.gen.c: fmtgen/parse.y
+ 	@echo Expect no conflicts.
+ 	$(YACC) -d fmtgen/parse.y
+ 	sed -e 's/[yY][yY]/parse_/g' y.tab.c > fmtgen/parse.gen.c
+@@ -2479,37 +2485,37 @@
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+ 		lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/ae_c.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/ae_c.1: lib/en/man1/ae_c.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/z_cr.so etc/version.so \
+ 		.man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/ae_c.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/ae_p.1: lib/en/man1/ae_p.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+ 		lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/ae_p.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/ae_p.1: lib/en/man1/ae_p.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/z_cr.so etc/version.so \
+ 		.man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/ae_p.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aeb.1: lib/en/man1/aeb.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+@@ -2522,10 +2528,10 @@
+ 		lib/en/man1/o_wait.so lib/en/man1/o__rules.so \
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aeb.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aeb.1: lib/en/man1/aeb.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/z_intuit.so \
+@@ -2538,10 +2544,10 @@
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so .man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aeb.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aeca.1: lib/en/man1/aeca.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+@@ -2552,10 +2558,10 @@
+ 		lib/en/man1/o_wait.so lib/en/man1/o__rules.so \
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aeca.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aeca.1: lib/en/man1/aeca.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/o_change.so \
+@@ -2566,10 +2572,10 @@
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so .man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aeca.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aecd.1: lib/en/man1/aecd.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+@@ -2581,10 +2587,10 @@
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aecd.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aecd.1: lib/en/man1/aecd.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/o_baselin.so \
+@@ -2596,10 +2602,10 @@
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so \
+ 		.man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aecd.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aechown.1: lib/en/man1/aechown.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+@@ -2612,10 +2618,10 @@
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aechown.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aechown.1: lib/en/man1/aechown.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/z_filelocn.so \
+@@ -2628,10 +2634,10 @@
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so \
+ 		.man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aechown.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aeclean.1: lib/en/man1/aeclean.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+@@ -2642,10 +2648,10 @@
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aeclean.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aeclean.1: lib/en/man1/aeclean.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/o_symlnk.so \
+@@ -2656,10 +2662,10 @@
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so \
+ 		.man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aeclean.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aeclone.1: lib/en/man1/aeclone.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+@@ -2670,10 +2676,10 @@
+ 		lib/en/man1/o_wait.so lib/en/man1/o__rules.so \
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aeclone.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aeclone.1: lib/en/man1/aeclone.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/z_filelocn.so \
+@@ -2684,10 +2690,10 @@
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so .man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aeclone.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aecp.1: lib/en/man1/aecp.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+@@ -2701,10 +2707,10 @@
+ 		lib/en/man1/o_wait.so lib/en/man1/o__rules.so \
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aecp.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aecp.1: lib/en/man1/aecp.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/z_intuit.so \
+@@ -2718,10 +2724,10 @@
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so .man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aecp.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aecpu.1: lib/en/man1/aecpu.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+@@ -2733,10 +2739,10 @@
+ 		lib/en/man1/o_wait.so lib/en/man1/o__rules.so \
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aecpu.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aecpu.1: lib/en/man1/aecpu.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/z_intuit.so \
+@@ -2748,10 +2754,10 @@
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so .man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aecpu.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aed.1: lib/en/man1/aed.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+@@ -2764,10 +2770,10 @@
+ 		lib/en/man1/o_wait.so lib/en/man1/o__rules.so \
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aed.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aed.1: lib/en/man1/aed.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/z_intuit.so \
+@@ -2780,10 +2786,10 @@
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so .man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aed.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aedb.1: lib/en/man1/aedb.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+@@ -2795,10 +2801,10 @@
+ 		lib/en/man1/o_wait.so lib/en/man1/o__rules.so \
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aedb.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aedb.1: lib/en/man1/aedb.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/z_filelocn.so \
+@@ -2810,10 +2816,10 @@
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so .man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aedb.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aedbu.1: lib/en/man1/aedbu.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+@@ -2824,10 +2830,10 @@
+ 		lib/en/man1/o_wait.so lib/en/man1/o__rules.so \
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aedbu.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aedbu.1: lib/en/man1/aedbu.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/o_change.so \
+@@ -2838,10 +2844,10 @@
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so .man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aedbu.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aede.1: lib/en/man1/aede.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+@@ -2851,10 +2857,10 @@
+ 		lib/en/man1/o_wait.so lib/en/man1/o__rules.so \
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aede.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aede.1: lib/en/man1/aede.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/o_change.so \
+@@ -2864,10 +2870,10 @@
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so .man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aede.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aedeu.1: lib/en/man1/aedeu.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+@@ -2877,10 +2883,10 @@
+ 		lib/en/man1/o_wait.so lib/en/man1/o__rules.so \
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aedeu.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aedeu.1: lib/en/man1/aedeu.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/o_change.so \
+@@ -2890,10 +2896,10 @@
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so .man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aedeu.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aedist.1: lib/en/man1/aedist.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+@@ -2902,10 +2908,10 @@
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aedist.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aedist.1: lib/en/man1/aedist.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/o_change.so \
+@@ -2914,10 +2920,10 @@
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so \
+ 		.man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aedist.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aedn.1: lib/en/man1/aedn.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+@@ -2926,10 +2932,10 @@
+ 		lib/en/man1/o_wait.so lib/en/man1/o__rules.so \
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aedn.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aedn.1: lib/en/man1/aedn.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/o_help.so \
+@@ -2938,10 +2944,10 @@
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so .man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aedn.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aefind.1: lib/en/man1/aefind.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+@@ -2950,10 +2956,10 @@
+ 		lib/en/man1/o_project.so lib/en/man1/o__rules.so \
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aefind.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aefind.1: lib/en/man1/aefind.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/o_baselin.so \
+@@ -2962,28 +2968,28 @@
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so .man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aefind.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aefp.1: lib/en/man1/aefp.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/o__rules.so \
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aefp.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aefp.1: lib/en/man1/aefp.1 \
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so .man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aefp.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aegis.1: lib/en/man1/aegis.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+@@ -2994,10 +3000,10 @@
+ 		lib/en/man1/o__rules.so lib/en/man1/z_cr.so \
+ 		etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aegis.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aegis.1: lib/en/man1/aegis.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/o_help.so \
+@@ -3007,10 +3013,10 @@
+ 		lib/en/man1/o_project.so lib/en/man1/o__rules.so \
+ 		lib/en/man1/z_cr.so etc/version.so .man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aegis.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aeib.1: lib/en/man1/aeib.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+@@ -3021,10 +3027,10 @@
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aeib.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aeib.1: lib/en/man1/aeib.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/o_change.so \
+@@ -3035,10 +3041,10 @@
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so \
+ 		.man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aeib.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aeibu.1: lib/en/man1/aeibu.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+@@ -3049,10 +3055,10 @@
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aeibu.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aeibu.1: lib/en/man1/aeibu.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/o_change.so \
+@@ -3063,10 +3069,10 @@
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so \
+ 		.man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aeibu.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aeifail.1: lib/en/man1/aeifail.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+@@ -3078,10 +3084,10 @@
+ 		lib/en/man1/o_wait.so lib/en/man1/o__rules.so \
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aeifail.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aeifail.1: lib/en/man1/aeifail.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/o_change.so \
+@@ -3093,10 +3099,10 @@
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so .man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aeifail.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aeipass.1: lib/en/man1/aeipass.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+@@ -3108,10 +3114,10 @@
+ 		lib/en/man1/o_wait.so lib/en/man1/o__rules.so \
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aeipass.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aeipass.1: lib/en/man1/aeipass.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/z_bl_lock.so \
+@@ -3123,10 +3129,10 @@
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so .man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aeipass.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/ael.1: lib/en/man1/ael.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+@@ -3137,10 +3143,10 @@
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/ael.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/ael.1: lib/en/man1/ael.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/o_change.so \
+@@ -3151,25 +3157,25 @@
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so \
+ 		.man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/ael.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aelic.1: lib/en/man1/aelic.1 \
+ 		lib/en/man1/.mkdir.datadir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aelic.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aelic.1: lib/en/man1/aelic.1 .man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aelic.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aemv.1: lib/en/man1/aemv.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+@@ -3181,10 +3187,10 @@
+ 		lib/en/man1/o_whiteout.so lib/en/man1/o__rules.so \
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aemv.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aemv.1: lib/en/man1/aemv.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/z_intuit.so \
+@@ -3196,10 +3202,10 @@
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so .man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aemv.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aena.1: lib/en/man1/aena.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+@@ -3209,10 +3215,10 @@
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aena.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aena.1: lib/en/man1/aena.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/o_help.so \
+@@ -3222,10 +3228,10 @@
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so \
+ 		.man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aena.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aenbr.1: lib/en/man1/aenbr.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+@@ -3233,10 +3239,10 @@
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aenbr.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aenbr.1: lib/en/man1/aenbr.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/o_help.so \
+@@ -3244,10 +3250,10 @@
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so \
+ 		.man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aenbr.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aenbru.1: lib/en/man1/aenbru.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+@@ -3256,10 +3262,10 @@
+ 		lib/en/man1/o_wait.so lib/en/man1/o__rules.so \
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aenbru.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aenbru.1: lib/en/man1/aenbru.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/o_change.so \
+@@ -3268,10 +3274,10 @@
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so .man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aenbru.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aenc.1: lib/en/man1/aenc.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+@@ -3282,10 +3288,10 @@
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aenc.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aenc.1: lib/en/man1/aenc.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/o_edit.so \
+@@ -3296,10 +3302,10 @@
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so \
+ 		.man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aenc.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aencu.1: lib/en/man1/aencu.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+@@ -3309,10 +3315,10 @@
+ 		lib/en/man1/o_wait.so lib/en/man1/o__rules.so \
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aencu.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aencu.1: lib/en/man1/aencu.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/o_change.so \
+@@ -3322,10 +3328,10 @@
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so .man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aencu.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aend.1: lib/en/man1/aend.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+@@ -3335,10 +3341,10 @@
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aend.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aend.1: lib/en/man1/aend.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/o_help.so \
+@@ -3348,10 +3354,10 @@
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so \
+ 		.man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aend.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aenf.1: lib/en/man1/aenf.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+@@ -3364,10 +3370,10 @@
+ 		lib/en/man1/o_wait.so lib/en/man1/o__rules.so \
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aenf.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aenf.1: lib/en/man1/aenf.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/z_filesize.so \
+@@ -3380,10 +3386,10 @@
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so .man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aenf.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aenfu.1: lib/en/man1/aenfu.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+@@ -3395,10 +3401,10 @@
+ 		lib/en/man1/o_wait.so lib/en/man1/o__rules.so \
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aenfu.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aenfu.1: lib/en/man1/aenfu.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/z_intuit.so \
+@@ -3410,10 +3416,10 @@
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so .man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aenfu.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aeni.1: lib/en/man1/aeni.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+@@ -3423,10 +3429,10 @@
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aeni.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aeni.1: lib/en/man1/aeni.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/o_help.so \
+@@ -3436,10 +3442,10 @@
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so \
+ 		.man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aeni.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aenpr.1: lib/en/man1/aenpr.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+@@ -3451,10 +3457,10 @@
+ 		lib/en/man1/o_wait.so lib/en/man1/o__rules.so \
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aenpr.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aenpr.1: lib/en/man1/aenpr.1 \
+ 		lib/en/man1/z_name.so etc/libdir.so \
+@@ -3466,10 +3472,10 @@
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so .man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aenpr.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aenrls.1: lib/en/man1/aenrls.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+@@ -3481,10 +3487,10 @@
+ 		lib/en/man1/o_wait.so lib/en/man1/o__rules.so \
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aenrls.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aenrls.1: lib/en/man1/aenrls.1 \
+ 		lib/en/man1/z_name.so etc/libdir.so \
+@@ -3496,10 +3502,10 @@
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so .man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aenrls.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aenrv.1: lib/en/man1/aenrv.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+@@ -3509,10 +3515,10 @@
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aenrv.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aenrv.1: lib/en/man1/aenrv.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/o_help.so \
+@@ -3522,10 +3528,10 @@
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so \
+ 		.man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aenrv.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aent.1: lib/en/man1/aent.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+@@ -3540,10 +3546,10 @@
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aent.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aent.1: lib/en/man1/aent.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/z_intuit.so \
+@@ -3558,10 +3564,10 @@
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so \
+ 		.man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aent.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aentu.1: lib/en/man1/aentu.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+@@ -3574,10 +3580,10 @@
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aentu.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aentu.1: lib/en/man1/aentu.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/z_intuit.so \
+@@ -3590,10 +3596,10 @@
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so \
+ 		.man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aentu.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aepa.1: lib/en/man1/aepa.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+@@ -3604,10 +3610,10 @@
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aepa.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aepa.1: lib/en/man1/aepa.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/o_edit.so \
+@@ -3618,10 +3624,10 @@
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so \
+ 		.man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aepa.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aer.1: lib/en/man1/aer.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+@@ -3631,10 +3637,10 @@
+ 		lib/en/man1/o_verbose.so lib/en/man1/o__rules.so \
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aer.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aer.1: lib/en/man1/aer.1 \
+ 		lib/en/man1/z_name.so etc/libdir.so \
+@@ -3644,10 +3650,10 @@
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so .man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aer.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aera.1: lib/en/man1/aera.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+@@ -3657,10 +3663,10 @@
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aera.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aera.1: lib/en/man1/aera.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/o_help.so \
+@@ -3670,10 +3676,10 @@
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so \
+ 		.man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aera.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aerd.1: lib/en/man1/aerd.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+@@ -3683,10 +3689,10 @@
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aerd.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aerd.1: lib/en/man1/aerd.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/o_help.so \
+@@ -3696,30 +3702,30 @@
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so \
+ 		.man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aerd.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aerect.1: lib/en/man1/aerect.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+ 		lib/en/man1/o_help.so lib/en/man1/o__rules.so \
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aerect.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aerect.1: lib/en/man1/aerect.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/o_help.so \
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so .man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aerect.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aerfail.1: lib/en/man1/aerfail.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+@@ -3731,10 +3737,10 @@
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aerfail.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aerfail.1: lib/en/man1/aerfail.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/o_change.so \
+@@ -3746,10 +3752,10 @@
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so \
+ 		.man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aerfail.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aeri.1: lib/en/man1/aeri.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+@@ -3759,10 +3765,10 @@
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aeri.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aeri.1: lib/en/man1/aeri.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/o_help.so \
+@@ -3772,10 +3778,10 @@
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so \
+ 		.man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aeri.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aerm.1: lib/en/man1/aerm.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+@@ -3788,10 +3794,10 @@
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aerm.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aerm.1: lib/en/man1/aerm.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/z_intuit.so \
+@@ -3804,10 +3810,10 @@
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so \
+ 		.man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aerm.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aermpr.1: lib/en/man1/aermpr.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+@@ -3818,10 +3824,10 @@
+ 		lib/en/man1/o_wait.so lib/en/man1/o__rules.so \
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aermpr.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aermpr.1: lib/en/man1/aermpr.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/o_help.so \
+@@ -3832,10 +3838,10 @@
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so .man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aermpr.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aermu.1: lib/en/man1/aermu.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+@@ -3846,10 +3852,10 @@
+ 		lib/en/man1/o_wait.so lib/en/man1/o__rules.so \
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aermu.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aermu.1: lib/en/man1/aermu.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/z_intuit.so \
+@@ -3860,10 +3866,10 @@
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so .man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aermu.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aerpass.1: lib/en/man1/aerpass.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+@@ -3873,10 +3879,10 @@
+ 		lib/en/man1/o_wait.so lib/en/man1/o__rules.so \
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aerpass.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aerpass.1: lib/en/man1/aerpass.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/o_change.so \
+@@ -3886,10 +3892,10 @@
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so .man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aerpass.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aerpu.1: lib/en/man1/aerpu.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+@@ -3899,10 +3905,10 @@
+ 		lib/en/man1/o_wait.so lib/en/man1/o__rules.so \
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aerpu.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aerpu.1: lib/en/man1/aerpu.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/o_change.so \
+@@ -3912,10 +3918,10 @@
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so .man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aerpu.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aerrv.1: lib/en/man1/aerrv.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+@@ -3925,10 +3931,10 @@
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aerrv.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aerrv.1: lib/en/man1/aerrv.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/o_help.so \
+@@ -3938,10 +3944,10 @@
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so \
+ 		.man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aerrv.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aet.1: lib/en/man1/aet.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+@@ -3956,10 +3962,10 @@
+ 		lib/en/man1/o_wait.so lib/en/man1/o__rules.so \
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aet.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aet.1: lib/en/man1/aet.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/z_intuit.so \
+@@ -3974,351 +3980,351 @@
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so .man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aet.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/aev.1: lib/en/man1/aev.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+ 		lib/en/man1/o_help.so lib/en/man1/o__rules.so \
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aev.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/aev.1: lib/en/man1/aev.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/o_help.so \
+ 		lib/en/man1/o__rules.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so .man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/aev.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/tkaeca.1: lib/en/man1/tkaeca.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+ 		lib/en/man1/z_exit.so lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/tkaeca.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/tkaeca.1: lib/en/man1/tkaeca.1 \
+ 		lib/en/man1/z_name.so lib/en/man1/z_exit.so \
+ 		lib/en/man1/z_cr.so etc/version.so .man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/tkaeca.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man1/tkaegis.1: lib/en/man1/tkaegis.1 \
+ 		lib/en/man1/.mkdir.datadir lib/en/man1/z_name.so \
+ 		etc/version.so
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/tkaegis.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man1/tkaegis.1: lib/en/man1/tkaegis.1 \
+ 		lib/en/man1/z_name.so etc/version.so .man1dir
+ 	$(SOELIM) -Ilib/en/man1 -Ietc lib/en/man1/tkaegis.1 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man5/aecattr.5: lib/en/man5/aecattr.5 \
+ 		lib/en/man5/.mkdir.datadir lib/en/man5/z_name.so \
+ 		lib/en/man1/z_name.so lib/en/man5/aecattr.so \
+ 		lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man5 -Ietc lib/en/man5/aecattr.5 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man5/aecattr.5: lib/en/man5/aecattr.5 \
+ 		lib/en/man5/z_name.so lib/en/man1/z_name.so \
+ 		lib/en/man5/aecattr.so lib/en/man1/z_cr.so \
+ 		etc/version.so .man5dir
+ 	$(SOELIM) -Ilib/en/man5 -Ietc lib/en/man5/aecattr.5 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man5/aecstate.5: lib/en/man5/aecstate.5 \
+ 		lib/en/man5/.mkdir.datadir lib/en/man5/z_name.so \
+ 		lib/en/man1/z_name.so lib/en/man5/aecattr.so \
+ 		lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man5 -Ietc lib/en/man5/aecstate.5 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man5/aecstate.5: lib/en/man5/aecstate.5 \
+ 		lib/en/man5/z_name.so lib/en/man1/z_name.so \
+ 		lib/en/man5/aecattr.so lib/en/man1/z_cr.so \
+ 		etc/version.so .man5dir
+ 	$(SOELIM) -Ilib/en/man5 -Ietc lib/en/man5/aecstate.5 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man5/aedir.5: lib/en/man5/aedir.5 \
+ 		lib/en/man5/.mkdir.datadir lib/en/man5/z_name.so \
+ 		lib/en/man1/z_name.so lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man5 -Ietc lib/en/man5/aedir.5 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man5/aedir.5: lib/en/man5/aedir.5 \
+ 		lib/en/man5/z_name.so lib/en/man1/z_name.so \
+ 		lib/en/man1/z_cr.so etc/version.so .man5dir
+ 	$(SOELIM) -Ilib/en/man5 -Ietc lib/en/man5/aedir.5 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man5/aefstate.5: lib/en/man5/aefstate.5 \
+ 		lib/en/man5/.mkdir.datadir lib/en/man5/z_name.so \
+ 		lib/en/man1/z_name.so lib/en/man5/aemetrics.so \
+ 		lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man5 -Ietc lib/en/man5/aefstate.5 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man5/aefstate.5: lib/en/man5/aefstate.5 \
+ 		lib/en/man5/z_name.so lib/en/man1/z_name.so \
+ 		lib/en/man5/aemetrics.so lib/en/man1/z_cr.so \
+ 		etc/version.so .man5dir
+ 	$(SOELIM) -Ilib/en/man5 -Ietc lib/en/man5/aefstate.5 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man5/aegis.5: lib/en/man5/aegis.5 \
+ 		lib/en/man5/.mkdir.datadir lib/en/man5/z_name.so \
+ 		lib/en/man1/z_name.so lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man5 -Ietc lib/en/man5/aegis.5 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man5/aegis.5: lib/en/man5/aegis.5 \
+ 		lib/en/man5/z_name.so lib/en/man1/z_name.so \
+ 		lib/en/man1/z_cr.so etc/version.so .man5dir
+ 	$(SOELIM) -Ilib/en/man5 -Ietc lib/en/man5/aegis.5 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man5/aegstate.5: lib/en/man5/aegstate.5 \
+ 		lib/en/man5/.mkdir.datadir lib/en/man5/z_name.so \
+ 		lib/en/man1/z_name.so etc/libdir.so lib/en/man1/z_cr.so \
+ 		etc/version.so
+ 	$(SOELIM) -Ilib/en/man5 -Ietc lib/en/man5/aegstate.5 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man5/aegstate.5: lib/en/man5/aegstate.5 \
+ 		lib/en/man5/z_name.so lib/en/man1/z_name.so \
+ 		etc/libdir.so lib/en/man1/z_cr.so etc/version.so \
+ 		.man5dir
+ 	$(SOELIM) -Ilib/en/man5 -Ietc lib/en/man5/aegstate.5 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man5/aemetrics.5: lib/en/man5/aemetrics.5 \
+ 		lib/en/man5/.mkdir.datadir lib/en/man5/z_name.so \
+ 		lib/en/man1/z_name.so lib/en/man5/aemetrics.so \
+ 		lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man5 -Ietc lib/en/man5/aemetrics.5 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man5/aemetrics.5: lib/en/man5/aemetrics.5 \
+ 		lib/en/man5/z_name.so lib/en/man1/z_name.so \
+ 		lib/en/man5/aemetrics.so lib/en/man1/z_cr.so \
+ 		etc/version.so .man5dir
+ 	$(SOELIM) -Ilib/en/man5 -Ietc lib/en/man5/aemetrics.5 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man5/aepattr.5: lib/en/man5/aepattr.5 \
+ 		lib/en/man5/.mkdir.datadir lib/en/man5/z_name.so \
+ 		lib/en/man1/z_name.so lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man5 -Ietc lib/en/man5/aepattr.5 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man5/aepattr.5: lib/en/man5/aepattr.5 \
+ 		lib/en/man5/z_name.so lib/en/man1/z_name.so \
+ 		lib/en/man1/z_cr.so etc/version.so .man5dir
+ 	$(SOELIM) -Ilib/en/man5 -Ietc lib/en/man5/aepattr.5 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man5/aepconf.5: lib/en/man5/aepconf.5 \
+ 		lib/en/man5/.mkdir.datadir lib/en/man5/z_name.so \
+ 		lib/en/man1/z_name.so lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man5 -Ietc lib/en/man5/aepconf.5 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man5/aepconf.5: lib/en/man5/aepconf.5 \
+ 		lib/en/man5/z_name.so lib/en/man1/z_name.so \
+ 		lib/en/man1/z_cr.so etc/version.so .man5dir
+ 	$(SOELIM) -Ilib/en/man5 -Ietc lib/en/man5/aepconf.5 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man5/aepstate.5: lib/en/man5/aepstate.5 \
+ 		lib/en/man5/.mkdir.datadir lib/en/man5/z_name.so \
+ 		lib/en/man1/z_name.so lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man5 -Ietc lib/en/man5/aepstate.5 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man5/aepstate.5: lib/en/man5/aepstate.5 \
+ 		lib/en/man5/z_name.so lib/en/man1/z_name.so \
+ 		lib/en/man1/z_cr.so etc/version.so .man5dir
+ 	$(SOELIM) -Ilib/en/man5 -Ietc lib/en/man5/aepstate.5 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man5/aer.5: lib/en/man5/aer.5 \
+ 		lib/en/man5/.mkdir.datadir lib/en/man5/z_name.so \
+ 		lib/en/man1/z_name.so etc/libdir.so lib/en/man1/z_cr.so \
+ 		etc/version.so
+ 	$(SOELIM) -Ilib/en/man5 -Ietc lib/en/man5/aer.5 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man5/aer.5: lib/en/man5/aer.5 \
+ 		lib/en/man5/z_name.so lib/en/man1/z_name.so \
+ 		etc/libdir.so lib/en/man1/z_cr.so etc/version.so \
+ 		.man5dir
+ 	$(SOELIM) -Ilib/en/man5 -Ietc lib/en/man5/aer.5 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man5/aerptidx.5: lib/en/man5/aerptidx.5 \
+ 		lib/en/man5/.mkdir.datadir lib/en/man5/z_name.so \
+ 		lib/en/man1/z_name.so etc/libdir.so lib/en/man1/z_cr.so \
+ 		etc/version.so
+ 	$(SOELIM) -Ilib/en/man5 -Ietc lib/en/man5/aerptidx.5 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man5/aerptidx.5: lib/en/man5/aerptidx.5 \
+ 		lib/en/man5/z_name.so lib/en/man1/z_name.so \
+ 		etc/libdir.so lib/en/man1/z_cr.so etc/version.so \
+ 		.man5dir
+ 	$(SOELIM) -Ilib/en/man5 -Ietc lib/en/man5/aerptidx.5 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man5/aesub.5: lib/en/man5/aesub.5 \
+ 		lib/en/man5/.mkdir.datadir lib/en/man5/z_name.so \
+ 		lib/en/man1/z_name.so lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man5 -Ietc lib/en/man5/aesub.5 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man5/aesub.5: lib/en/man5/aesub.5 \
+ 		lib/en/man5/z_name.so lib/en/man1/z_name.so \
+ 		lib/en/man1/z_cr.so etc/version.so .man5dir
+ 	$(SOELIM) -Ilib/en/man5 -Ietc lib/en/man5/aesub.5 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man5/aeuconf.5: lib/en/man5/aeuconf.5 \
+ 		lib/en/man5/.mkdir.datadir lib/en/man5/z_name.so \
+ 		lib/en/man1/z_name.so lib/en/man1/z_cr.so etc/version.so
+ 	$(SOELIM) -Ilib/en/man5 -Ietc lib/en/man5/aeuconf.5 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man5/aeuconf.5: lib/en/man5/aeuconf.5 \
+ 		lib/en/man5/z_name.so lib/en/man1/z_name.so \
+ 		lib/en/man1/z_cr.so etc/version.so .man5dir
+ 	$(SOELIM) -Ilib/en/man5 -Ietc lib/en/man5/aeuconf.5 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/man5/aeustate.5: lib/en/man5/aeustate.5 \
+ 		lib/en/man5/.mkdir.datadir lib/en/man5/z_name.so \
+ 		lib/en/man1/z_name.so etc/libdir.so lib/en/man1/z_cr.so \
+ 		etc/version.so
+ 	$(SOELIM) -Ilib/en/man5 -Ietc lib/en/man5/aeustate.5 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(mandir)/man5/aeustate.5: lib/en/man5/aeustate.5 \
+ 		lib/en/man5/z_name.so lib/en/man1/z_name.so \
+ 		etc/libdir.so lib/en/man1/z_cr.so etc/version.so \
+ 		.man5dir
+ 	$(SOELIM) -Ilib/en/man5 -Ietc lib/en/man5/aeustate.5 > \
+-		$${TMPDIR-/tmp}/aegis.tmp
+-	$(INSTALL_DATA) $${TMPDIR-/tmp}/aegis.tmp $@
++		$${TMPDIR-/tmp}/$(@F)aegis.tmp
++	$(INSTALL_DATA) $${TMPDIR-/tmp}/$(@F)aegis.tmp $@
+ 	-chown $(AEGIS_UID) $@ && chgrp $(AEGIS_GID) $@
+-	@rm -f $${TMPDIR-/tmp}/aegis.tmp
++	@rm -f $${TMPDIR-/tmp}/$(@F)aegis.tmp
+ 
+ $(RPM_BUILD_ROOT)$(datadir)/en/notes/locale.man: lib/en/notes/locale.man \
+ 		lib/en/notes/.mkdir.datadir
+@@ -5615,7 +5621,9 @@
+ 		libaegis/aer/report.gen.c
+ 	mv report.gen.$(OBJEXT) $@
+ 
+-libaegis/aer/report.gen.c libaegis/aer/report.gen.h: \
++libaegis/aer/report.gen.h:	libaegis/aer/report.gen.c
++
++libaegis/aer/report.gen.c: \
+ 		libaegis/aer/report.y
+ 	@echo Expect 2 reduce/reduce conflicts.
+ 	$(YACC) -d libaegis/aer/report.y
+@@ -5781,8 +5789,8 @@
+ 		common/error.h common/noreturn.h libaegis/sub.h \
+ 		common/str.h common/ac/stdarg.h
+ 	$(CC) $(CFLAGS) -Ilibaegis -Ilibaegis -Icommon -c \
+-		libaegis/aer/value/error.c
+-	mv error.$(OBJEXT) $@
++		libaegis/aer/value/error.c -o error1.$(OBJEXT)
++	mv error1.$(OBJEXT) $@
+ 
+ libaegis/aer/value/fstate.$(OBJEXT): libaegis/aer/value/fstate.c \
+ 		libaegis/aer/value/fstate.h libaegis/aer/value.h \
+@@ -6297,8 +6305,8 @@
+ 		libaegis/os.h libaegis/project.h libaegis/pstate.h \
+ 		libaegis/pattr.h libaegis/sub.h common/trace.h
+ 	$(CC) $(CFLAGS) -Ilibaegis -Ilibaegis -Icommon -c \
+-		libaegis/change/develop_direct/get.c
+-	mv get.$(OBJEXT) $@
++		libaegis/change/develop_direct/get.c -o get4.$(OBJEXT)
++	mv get4.$(OBJEXT) $@
+ 
+ libaegis/change/develop_direct/set.$(OBJEXT): \
+ 		libaegis/change/develop_direct/set.c libaegis/arglex2.h \
+@@ -6412,8 +6420,8 @@
+ 		libaegis/pstate.h libaegis/pattr.h libaegis/sub.h \
+ 		common/noreturn.h
+ 	$(CC) $(CFLAGS) -Ilibaegis -Ilibaegis -Icommon -c \
+-		libaegis/change/error.c
+-	mv error.$(OBJEXT) $@
++		libaegis/change/error.c -o error2.$(OBJEXT)
++	mv error2.$(OBJEXT) $@
+ 
+ libaegis/change/fatal.$(OBJEXT): libaegis/change/fatal.c \
+ 		libaegis/change.h common/main.h libaegis/cstate.h \
+@@ -6577,8 +6585,8 @@
+ 		libaegis/parse.h libaegis/fstate.h libaegis/pconf.h \
+ 		libaegis/zero.h common/error.h common/noreturn.h
+ 	$(CC) $(CFLAGS) -Ilibaegis -Ilibaegis -Icommon -c \
+-		libaegis/change/integra_direct/clear.c
+-	mv clear.$(OBJEXT) $@
++		libaegis/change/integra_direct/clear.c -o clear1.$(OBJEXT)
++	mv clear1.$(OBJEXT) $@
+ 
+ libaegis/change/integra_direct/get.$(OBJEXT): \
+ 		libaegis/change/integra_direct/get.c libaegis/change.h \
+@@ -6590,8 +6598,8 @@
+ 		libaegis/os.h libaegis/project.h libaegis/pstate.h \
+ 		libaegis/pattr.h libaegis/sub.h common/trace.h
+ 	$(CC) $(CFLAGS) -Ilibaegis -Ilibaegis -Icommon -c \
+-		libaegis/change/integra_direct/get.c
+-	mv get.$(OBJEXT) $@
++		libaegis/change/integra_direct/get.c -o get5.$(OBJEXT)
++	mv get5.$(OBJEXT) $@
+ 
+ libaegis/change/integra_direct/set.$(OBJEXT): \
+ 		libaegis/change/integra_direct/set.c libaegis/arglex2.h \
+@@ -6604,8 +6612,8 @@
+ 		libaegis/project.h libaegis/pstate.h libaegis/pattr.h \
+ 		libaegis/sub.h common/trace.h
+ 	$(CC) $(CFLAGS) -Ilibaegis -Ilibaegis -Icommon -c \
+-		libaegis/change/integra_direct/set.c
+-	mv set.$(OBJEXT) $@
++		libaegis/change/integra_direct/set.c -o set1.$(OBJEXT)
++	mv set1.$(OBJEXT) $@
+ 
+ libaegis/change/integra_name.$(OBJEXT): libaegis/change/integra_name.c \
+ 		libaegis/change.h common/main.h libaegis/cstate.h \
+@@ -6650,8 +6658,8 @@
+ 		common/noreturn.h libaegis/os.h libaegis/sub.h \
+ 		common/trace.h
+ 	$(CC) $(CFLAGS) -Ilibaegis -Ilibaegis -Icommon -c \
+-		libaegis/change/logfile/get.c
+-	mv get.$(OBJEXT) $@
++		libaegis/change/logfile/get.c -o get6.$(OBJEXT)
++	mv get6.$(OBJEXT) $@
+ 
+ libaegis/change/metrics/file_pat_get.$(OBJEXT): \
+ 		libaegis/change/metrics/file_pat_get.c libaegis/change.h \
+@@ -6697,8 +6705,8 @@
+ 		common/noreturn.h libaegis/os.h libaegis/sub.h \
+ 		common/trace.h
+ 	$(CC) $(CFLAGS) -Ilibaegis -Ilibaegis -Icommon -c \
+-		libaegis/change/pconf/get.c
+-	mv get.$(OBJEXT) $@
++		libaegis/change/pconf/get.c -o get1.$(OBJEXT)
++	mv get1.$(OBJEXT) $@
+ 
+ libaegis/change/pconf/path_get.$(OBJEXT): \
+ 		libaegis/change/pconf/path_get.c libaegis/change.h \
+@@ -7279,7 +7287,9 @@
+ 	$(CC) $(CFLAGS) -Ilibaegis -Ilibaegis -Icommon -c libaegis/gram.gen.c
+ 	mv gram.gen.$(OBJEXT) $@
+ 
+-libaegis/gram.gen.c libaegis/gram.gen.h: libaegis/gram.y
++libaegis/gram.gen.h: libaegis/gram.gen.c
++
++libaegis/gram.gen.c: libaegis/gram.y
+ 	@echo Expect no conflicts.
+ 	$(YACC) -d libaegis/gram.y
+ 	sed -e 's/[yY][yY]/gram_/g' y.tab.c > libaegis/gram.gen.c
+@@ -7766,8 +7776,8 @@
+ 		libaegis/project.h common/ac/time.h libaegis/pstate.h \
+ 		libaegis/project_hist.h libaegis/project/pattr/get.h
+ 	$(CC) $(CFLAGS) -Ilibaegis -Ilibaegis -Icommon -c \
+-		libaegis/project/pattr/get.c
+-	mv get.$(OBJEXT) $@
++		libaegis/project/pattr/get.c -o get2.$(OBJEXT)
++	mv get2.$(OBJEXT) $@
+ 
+ libaegis/project/pattr/set.$(OBJEXT): libaegis/project/pattr/set.c \
+ 		libaegis/pattr.h libaegis/type.h common/ac/stddef.h \
+@@ -7777,8 +7787,8 @@
+ 		libaegis/project_hist.h libaegis/project/pattr/set.h \
+ 		libaegis/sub.h common/noreturn.h
+ 	$(CC) $(CFLAGS) -Ilibaegis -Ilibaegis -Icommon -c \
+-		libaegis/project/pattr/set.c
+-	mv set.$(OBJEXT) $@
++		libaegis/project/pattr/set.c -o set2.$(OBJEXT)
++	mv set2.$(OBJEXT) $@
+ 
+ libaegis/project_file.$(OBJEXT): libaegis/project_file.c \
+ 		libaegis/change_file.h libaegis/change.h common/main.h \
+@@ -7892,8 +7902,8 @@
+ 		common/ac/time.h common/trace.h common/wstr_list.h \
+ 		common/wstr.h common/ac/stdlib.h
+ 	$(CC) $(CFLAGS) -Ilibaegis -Ilibaegis -Icommon -c \
+-		libaegis/sub/basename.c
+-	mv basename.$(OBJEXT) $@
++		libaegis/sub/basename.c -o basename1.$(OBJEXT)
++	mv basename1.$(OBJEXT) $@
+ 
+ libaegis/sub/binary_direc.$(OBJEXT): libaegis/sub/binary_direc.c \
+ 		common/libdir.h common/main.h libaegis/sub.h \
+@@ -7973,7 +7983,9 @@
+ 		libaegis/sub/expr_gram.gen.c
+ 	mv expr_gram.gen.$(OBJEXT) $@
+ 
+-libaegis/sub/expr_gram.gen.c libaegis/sub/expr_gram.gen.h: \
++libaegis/sub/expr_gram.gen.h: libaegis/sub/expr_gram.gen.c
++
++libaegis/sub/expr_gram.gen.c: \
+ 		libaegis/sub/expr_gram.y
+ 	@echo Expect no conflicts.
+ 	$(YACC) -d libaegis/sub/expr_gram.y
