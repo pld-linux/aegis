@@ -45,14 +45,13 @@ gzip -9nf lib/en/{*.{txt,ps},notes/locale.man} README \
 	$RPM_BUILD_ROOT%{_mandir}/man{1,5}/*
 
 %pre
-%{_sbindir}/groupadd -g 65 aegis
-%{_sbindir}/useradd -u 65 -g 65 -c "Project change supervisor" aegis
+GID=65; %groupadd
+UID=65; COMMENT="Project change supervisor"; HOMEDIR=/home/users/aegis
+SHELL=/bin/bash; %useradd
 
 %postun
-if [ $1 = 0 ] ; then
-	%{_sbindir}/userdel aegis
-	%{_sbindir}/groupdel aegis
-fi
+%userdel
+%groupdel
 
 %clean
 rm -rf $RPM_BUILD_ROOT
