@@ -49,7 +49,7 @@ install -d $RPM_BUILD_ROOT{%{_bindir},%{_datadir}/{aegis,locale},%{_libdir},%{_m
 %{__make} install \
 	AEGIS_UID=`id -ru` \
 	AEGIS_GID=`id -rg` \
-	HAVE_WEB=yes ScriptRoot=/home/httpd/cgi-bin
+	HAVE_WEB=yes ScriptRoot=/home/services/httpd/cgi-bin
 
 mv -f $RPM_BUILD_ROOT%{_libdir}/aegis/en $RPM_BUILD_ROOT%{_datadir}/locale
 rm -rf $RPM_BUILD_ROOT%{_datadir}/aegis/man1
@@ -98,7 +98,7 @@ fi
 %attr(0755,root,root) %{_bindir}/aereport
 %attr(0755,root,root) %{_bindir}/tk*
 
-%attr(0755,root,root) /home/httpd/cgi-bin/aegis.cgi
+%attr(0755,root,root) /home/services/httpd/cgi-bin/aegis.cgi
 %attr(0755,root,root) %{_datadir}/aegis/*.sh
 %attr(0755,root,root) %{_datadir}/aegis/remind/*
 
