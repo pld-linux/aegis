@@ -5,8 +5,6 @@ Version:	3.18
 Release:	1
 License:	GPL
 Group:		Development/Version Control
-Group(de):	Entwicklung/Versionkontrolle
-Group(pl):	Programowanie/Zarz±dzanie wersjami
 Source0:	http://www.canb.auug.org.au/~millerp/aegis/%{name}-%{version}.tar.gz
 Patch0:		%{name}-ugid.patch
 URL:		http://www.canb.auug.org.au/~millerp/aegis.html
