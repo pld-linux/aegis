@@ -31,7 +31,7 @@ rm -rf $RPM_BUILD_ROOT
 
 install -d $RPM_BUILD_ROOT{%{_bindir},%{_datadir}/{aegis,locale},%{_libdir},%{_mandir}/man1}
 
-make install \
+%{__make} install \
 	AEGIS_UID=`id -ru` \
 	AEGIS_GID=`id -rg`
 
