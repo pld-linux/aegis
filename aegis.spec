@@ -15,6 +15,7 @@ Patch0:		%{name}-ugid.patch
 Patch1:		%{name}-etc_dir.patch
 URL:		http://aegis.sourceforge.net/
 Icon:		aegis.gif
+BuildRequires:	bison
 BuildRequires:	zlib-devel
 Requires(pre):	/usr/bin/getgid
 Requires(pre):	/bin/id
