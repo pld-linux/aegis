@@ -1,7 +1,3 @@
-#
-# TODO:
-#	- check %%files for missing items
-#
 Summary:	Project change supervisor
 Summary(pl):	Nadzorca zmian w projektach
 Name:		aegis
@@ -104,29 +100,29 @@ fi
 %dir %attr(755,root,aegis) %{_libdir}/aegis
 %dir %{_datadir}/aegis
 
-%attr(0755,root,root) %{_bindir}/aedist
-%attr(0755,root,root) %{_bindir}/aefind
+%attr(755,root,root) %{_bindir}/aedist
+%attr(755,root,root) %{_bindir}/aefind
 %attr(4755,root,root) %{_bindir}/aegis
-%attr(0755,root,root) %{_bindir}/aerect
-%attr(0755,root,root) %{_bindir}/aereport
-%attr(0755,root,root) %{_bindir}/ae-sccs-put
-%attr(0755,root,root) %{_bindir}/ae_diff2htm
-%attr(0755,root,root) %{_bindir}/aeannotate
-%attr(0755,root,root) %{_bindir}/aebuffy
-%attr(0755,root,root) %{_bindir}/aecomp
-%attr(0755,root,root) %{_bindir}/aecomplete
-%attr(0755,root,root) %{_bindir}/aeimport
-%attr(0755,root,root) %{_bindir}/aeintegratq
-%attr(0755,root,root) %{_bindir}/aels
-%attr(0755,root,root) %{_bindir}/aemeasure
-%attr(0755,root,root) %{_bindir}/aepatch
-%attr(0755,root,root) %{_bindir}/aesub
-%attr(0755,root,root) %{_bindir}/aetar
-%attr(0755,root,root) %{_bindir}/xaegis
-%attr(0755,root,root) %{_bindir}/aegis.cgi
-%attr(0755,root,root) %{_bindir}/tk*
-%attr(0755,root,root) %{_datadir}/aegis/*.sh
-%attr(0755,root,root) %{_datadir}/aegis/remind/*
+%attr(755,root,root) %{_bindir}/aerect
+%attr(755,root,root) %{_bindir}/aereport
+%attr(755,root,root) %{_bindir}/ae-sccs-put
+%attr(755,root,root) %{_bindir}/ae_diff2htm
+%attr(755,root,root) %{_bindir}/aeannotate
+%attr(755,root,root) %{_bindir}/aebuffy
+%attr(755,root,root) %{_bindir}/aecomp
+%attr(755,root,root) %{_bindir}/aecomplete
+%attr(755,root,root) %{_bindir}/aeimport
+%attr(755,root,root) %{_bindir}/aeintegratq
+%attr(755,root,root) %{_bindir}/aels
+%attr(755,root,root) %{_bindir}/aemeasure
+%attr(755,root,root) %{_bindir}/aepatch
+%attr(755,root,root) %{_bindir}/aesub
+%attr(755,root,root) %{_bindir}/aetar
+%attr(755,root,root) %{_bindir}/xaegis
+%attr(755,root,root) %{_bindir}/aegis.cgi
+%attr(755,root,root) %{_bindir}/tk*
+%attr(755,root,root) %{_datadir}/aegis/*.sh
+%attr(755,root,root) %{_datadir}/aegis/remind
 
 %{_datadir}/aegis/aegis.icon
 %{_datadir}/aegis/aegis.mask
@@ -134,7 +130,7 @@ fi
 %{_datadir}/aegis/cshrc
 %{_datadir}/aegis/profile
 %{_datadir}/aegis/report.index
-%{_datadir}/aegis/config.example/*
-%{_datadir}/aegis/report/*
-%{_datadir}/aegis/wish/*
+%{_datadir}/aegis/config.example
+%{_datadir}/aegis/report
+%{_datadir}/aegis/wish
 %{_mandir}/man[15]/*
