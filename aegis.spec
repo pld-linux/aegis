@@ -6,7 +6,7 @@ License:	GPL
 Group:		Development/Version Control
 Group(pl):	Programowanie/Zarz±dzanie wersjami
 Source0:	http://www.canb.auug.org.au/~millerp/aegis/%{name}-%{version}.tar.gz
-Patch0:		aegis-ugid.patch
+Patch0:		%{name}-ugid.patch
 URL:		http://www.canb.auug.org.au/~millerp/aegis.html
 Icon:		aegis.gif
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
