@@ -15,14 +15,14 @@ diff -ur aegis-3.18.orig/common/config.h.in aegis-3.18/common/config.h.in
 diff -ur aegis-3.18.orig/configure aegis-3.18/configure
 --- aegis-3.18.orig/configure	Fri Jul  9 00:36:21 1999
 +++ aegis-3.18/configure	Sat Jul 17 00:00:25 1999
-@@ -2531,8 +2531,8 @@
- 
- echo $ac_n "checking for owner of aegis library files""... $ac_c" 1>&6
- echo "configure:2534: checking for owner of aegis library files" >&5
--AEGIS_UID=3
--AEGIS_GID=3
-+AEGIS_UID=65
-+AEGIS_GID=65
- if test -f ${sharedstatedir}/lockfile -o -f ${libdir}/lockfile ; then
- 	cat > conftest.$ac_ext << 'EOF'
- #line 2539 "configure"
+@@ -5200,8 +5200,8 @@
+ if test "x$AEGIS_UID" = "x"; then
+     echo "$as_me:$LINENO: checking for owner of aegis library files" >&5
+ echo $ECHO_N "checking for owner of aegis library files... $ECHO_C" >&6
+-    AEGIS_UID=3
+-    AEGIS_GID=3
++    AEGIS_UID=65
++    AEGIS_GID=65
+     if test "$OSTYPE" != "cygwin32" -a "$OSTYPE" != "cygwin" ; then
+     if test -f ${sharedstatedir}/lockfile -o -f ${libdir}/lockfile ; then
+        cat > conftest.$ac_ext << 'EOF'

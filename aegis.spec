@@ -1,15 +1,14 @@
 Summary:	Project change supervisor
 Summary(pl):	Nadzorca zmian w projektach
 Name:		aegis
-Version:	3.18
-Release:	2
+Version:	4.11
+Release:	0.1
 License:	GPL
 Group:		Development/Version Control
 Source0:	http://dl.sourceforge.net/aegis/%{name}-%{version}.tar.gz
-# Source0-md5:	95eb7752190e93253058fc7556b2128a
+# Source0-md5:	b62956487a6053ca2c3daea05c8c613d
 Patch0:		%{name}-ugid.patch
 Patch1:		%{name}-etc_dir.patch
-Patch2:		%{name}-pmake.patch
 URL:		http://aegis.sourceforge.net/
 Icon:		aegis.gif
 BuildRequires:	zlib-devel
@@ -40,7 +39,6 @@ koordynuje integracjê tych zmian w g³ówne ¼ród³a programu.
 %setup -q
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
 
 %build
 %configure2_13
@@ -101,9 +99,22 @@ fi
 %attr(4755,root,root) %{_bindir}/aegis
 %attr(0755,root,root) %{_bindir}/aerect
 %attr(0755,root,root) %{_bindir}/aereport
+%attr(0755,root,root) %{_bindir}/ae-sccs-put
+%attr(0755,root,root) %{_bindir}/ae_diff2htm
+%attr(0755,root,root) %{_bindir}/aeannotate
+%attr(0755,root,root) %{_bindir}/aebuffy
+%attr(0755,root,root) %{_bindir}/aecomp
+%attr(0755,root,root) %{_bindir}/aecomplete
+%attr(0755,root,root) %{_bindir}/aeimport
+%attr(0755,root,root) %{_bindir}/aeintegratq
+%attr(0755,root,root) %{_bindir}/aels
+%attr(0755,root,root) %{_bindir}/aemeasure
+%attr(0755,root,root) %{_bindir}/aepatch
+%attr(0755,root,root) %{_bindir}/aesub
+%attr(0755,root,root) %{_bindir}/aetar
+%attr(0755,root,root) %{_bindir}/xaegis
+%attr(0755,root,root) %{_bindir}/aegis.cgi
 %attr(0755,root,root) %{_bindir}/tk*
-
-%attr(0755,root,root) /home/services/httpd/cgi-bin/aegis.cgi
 %attr(0755,root,root) %{_datadir}/aegis/*.sh
 %attr(0755,root,root) %{_datadir}/aegis/remind/*
 
