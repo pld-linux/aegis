@@ -12,11 +12,11 @@ Icon:		aegis.gif
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
-Aegis is a transaction-based software configuration management system. It
-provides a framework within which a team of developers may work on many
-changes to a program independently, and Aegis coordinates integrating these
-changes back into the master source of the program, with as little
-disruption as possible.
+Aegis is a transaction-based software configuration management system.
+It provides a framework within which a team of developers may work on
+many changes to a program independently, and Aegis coordinates
+integrating these changes back into the master source of the program,
+with as little disruption as possible.
 
 %prep
 %setup -q
