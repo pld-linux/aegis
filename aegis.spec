@@ -1,13 +1,14 @@
 Summary:	Project change supervisor
 Name:		aegis
-Version:	3.12
-Release:	2
+Version:	3.18
+Release:	1
 Group:		Development/Version Control
 Group(pl):	Programowanie/Zarz±dzanie wersjami
 Copyright:	GPL
 URL:		http://www.canb.auug.org.au/~millerp/aegis.html
-#Icon:		aegis.gif
-Source:		http://www.canb.auug.org.au/~millerp/aegis-3.12.tar.gz
+Icon:		aegis.gif
+Source:		http://www.canb.auug.org.au/~millerp/%{name}-%{version}.tar.gz
+Patch:		aegis-ugid.patch
 BuildRoot:	/tmp/%{name}-%{version}-root
 
 %description
@@ -17,49 +18,52 @@ on many changes to a program independently, and Aegis coordinates
 integrating these changes back into the master source of the program,
 with as little disruption as possible.
 
-#%package txtdocs
-#Summary: Aegis documentation, dumb ascii text
-#Group: Development/Building
-
-#%description txtdocs
-#Aegis documentation in dumb ascii text format.
-
-#%package psdocs
-#Summary: Aegis documentation, PostScript format
-#Group: Development/Building
-
-#%description psdocs
-#Aegis documentation in PostScript format.
-
-#%package dvidocs
-#Summary: aegis documentation, DVI format
-#Group: Development/Building
-
-#%description dvidocs
-#Aegis documentation in DVI format.
-
 %prep
 %setup -q
+%patch -p1
 
 %build
-CFLAGS="$RPM_OPT_FLAGS" LDFLAGS=-s
-./configure %{_target_platform} \
-	--prefix=/usr
+%configure
 make
 
 %install
+rm -rf $RPM_BUILD_ROOT
+
+install -d $RPM_BUILD_ROOT{%{_bindir},%{_datadir}/{aegis,locale},%{_libdir},%{_mandir}/man1}
+
 make install RPM_BUILD_ROOT=$RPM_BUILD_ROOT \
 	AEGIS_UID=`id -ru` \
 	AEGIS_GID=`id -rg`
+
+mv -f $RPM_BUILD_ROOT%{_libdir}/aegis/en $RPM_BUILD_ROOT%{_datadir}/locale
+rm -rf $RPM_BUILD_ROOT%{_datadir}/aegis/man1
+rm -rf $RPM_BUILD_ROOT%{_datadir}/aegis/en
+rm -f lib/en/html/.mkdir*
+
+gzip -9nf lib/en/{*.{txt,ps},notes/locale.man} README \
+	$RPM_BUILD_ROOT%{_mandir}/man{1,5}/*
+
+%pre
+%{_sbindir}/groupadd -g 65 aegis
+%{_sbindir}/useradd -u 65 -g 65 -c "Project change supervisor" aegis
+%{_bindir}/update-db
+
+%postun
+if [ $1 = 0 ] ; then
+	%{_sbindir}/userdel aegis
+	%{_sbindir}/groupdel aegis
+	%{_bindir}/update-db
+fi
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
+%doc lib/en/*.{ps,txt}.gz lib/en/notes/locale.man.gz lib/en/html README.gz
 
-%dir /usr/com/aegis
-%dir %{_libdir}/aegis
+%dir %attr(755,aegis,aegis) /usr/com/aegis
+%dir %attr(755,aegis,aegis) %{_libdir}/aegis
 %dir %{_datadir}/aegis
 
 %attr(0755,root,root) %{_bindir}/aedist
@@ -67,70 +71,19 @@ rm -rf $RPM_BUILD_ROOT
 %attr(4755,root,root) %{_bindir}/aegis
 %attr(0755,root,root) %{_bindir}/aerect
 %attr(0755,root,root) %{_bindir}/aereport
+%attr(0755,root,root) %{_bindir}/tk*
 
 %attr(0755,root,root) /home/httpd/cgi-bin/aegis.cgi
-%attr(0755,root,root) %{_datadir}/aegis/db_forced.sh
-%attr(0755,root,root) %{_datadir}/aegis/de.inews.sh
-%attr(0755,root,root) %{_datadir}/aegis/de.sh
-%attr(0755,root,root) %{_datadir}/aegis/deu.inews.sh
-%attr(0755,root,root) %{_datadir}/aegis/deu.sh
-%attr(0755,root,root) %{_datadir}/aegis/if.inews.sh
-%attr(0755,root,root) %{_datadir}/aegis/if.sh
-%attr(0755,root,root) %{_datadir}/aegis/integrate_q.sh
-%attr(0755,root,root) %{_datadir}/aegis/ip.inews.sh
-%attr(0755,root,root) %{_datadir}/aegis/ip.sh
-%attr(0755,root,root) %{_datadir}/aegis/remind/awt_dvlp.sh
-%attr(0755,root,root) %{_datadir}/aegis/remind/awt_intgrtn.sh
-%attr(0755,root,root) %{_datadir}/aegis/remind/bng_dvlpd.sh
-%attr(0755,root,root) %{_datadir}/aegis/remind/bng_rvwd.sh
-%attr(0755,root,root) %{_datadir}/aegis/rf.inews.sh
-%attr(0755,root,root) %{_datadir}/aegis/rf.sh
-%attr(0755,root,root) %{_datadir}/aegis/rp.inews.sh
-%attr(0755,root,root) %{_datadir}/aegis/rp.sh
-%attr(0755,root,root) %{_datadir}/aegis/rpu.inews.sh
-%attr(0755,root,root) %{_datadir}/aegis/rpu.sh
+%attr(0755,root,root) %{_datadir}/aegis/*.sh
+%attr(0755,root,root) %{_datadir}/aegis/remind/*
 
 %{_datadir}/aegis/aegis.icon
 %{_datadir}/aegis/aegis.mask
 %{_datadir}/aegis/aegis.pgm
-%{_datadir}/aegis/config.example/architecture
-%{_datadir}/aegis/config.example/cake
-%{_datadir}/aegis/config.example/cook
-%{_datadir}/aegis/config.example/fhist
-%{_datadir}/aegis/config.example/make
-%{_datadir}/aegis/config.example/rcs
-%{_datadir}/aegis/config.example/sccs
 %{_datadir}/aegis/cshrc
-
-%{_libdir}/aegis/en/LC_MESSAGES/*
-%{_datadir}/aegis/en/html/*
-%{_mandir}/man[15]/*
-
-%{_datadir}/aegis/en/notes/locale.man
 %{_datadir}/aegis/profile
 %{_datadir}/aegis/report.index
+%{_datadir}/aegis/config.example/*
 %{_datadir}/aegis/report/*
-
-#%files txtdocs
-#%attr(0644,root,root) %{_datadir}/aegis/en/auug93.txt
-#%attr(0644,root,root) %{_datadir}/aegis/en/auug96.txt
-#%attr(0644,root,root) %{_datadir}/aegis/en/auug97.txt
-#%attr(0644,root,root) %{_datadir}/aegis/en/faq.txt
-#%attr(0644,root,root) %{_datadir}/aegis/en/refman.txt
-#%attr(0644,root,root) %{_datadir}/aegis/en/user-guide.txt
-
-#%files psdocs
-#%attr(0644,root,root) %{_datadir}/aegis/en/auug93.ps
-#%attr(0644,root,root) %{_datadir}/aegis/en/auug96.ps
-#%attr(0644,root,root) %{_datadir}/aegis/en/auug97.ps
-#%attr(0644,root,root) %{_datadir}/aegis/en/faq.ps
-#%attr(0644,root,root) %{_datadir}/aegis/en/refman.ps
-#%attr(0644,root,root) %{_datadir}/aegis/en/user-guide.ps
-
-#%files dvidocs
-#%attr(0644,root,root) %{_datadir}/aegis/en/auug93.dvi
-#%attr(0644,root,root) %{_datadir}/aegis/en/auug96.dvi
-#%attr(0644,root,root) %{_datadir}/aegis/en/auug97.dvi
-#%attr(0644,root,root) %{_datadir}/aegis/en/faq.dvi
-#%attr(0644,root,root) %{_datadir}/aegis/en/refman.dvi
-#%attr(0644,root,root) %{_datadir}/aegis/en/user-guide.dvi
+%{_datadir}/aegis/wish/*
+%{_mandir}/man[15]/*
