@@ -7,7 +7,7 @@ License:	GPL
 Group:		Development/Version Control
 Source0:	http://www.canb.auug.org.au/~millerp/aegis/%{name}-%{version}.tar.gz
 Patch0:		%{name}-ugid.patch
-Patch1:		%{name}-home_etc.patch
+Patch1:		%{name}-etc_dir.patch
 Patch2:		%{name}-pmake.patch
 URL:		http://www.canb.auug.org.au/~millerp/aegis.html
 Icon:		aegis.gif
