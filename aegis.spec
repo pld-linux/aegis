@@ -5,11 +5,12 @@ Version:	3.18
 Release:	2
 License:	GPL
 Group:		Development/Version Control
-Source0:	http://www.canb.auug.org.au/~millerp/aegis/%{name}-%{version}.tar.gz
+Source0:	http://dl.sourceforge.net/aegis/%{name}-%{version}.tar.gz
+# Source0-md5:	95eb7752190e93253058fc7556b2128a
 Patch0:		%{name}-ugid.patch
 Patch1:		%{name}-etc_dir.patch
 Patch2:		%{name}-pmake.patch
-URL:		http://www.canb.auug.org.au/~millerp/aegis.html
+URL:		http://aegis.sourceforge.net/
 Icon:		aegis.gif
 BuildRequires:	zlib-devel
 Requires(pre): /usr/bin/getgid
