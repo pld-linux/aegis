@@ -16,6 +16,8 @@ Patch1:		%{name}-etc_dir.patch
 URL:		http://aegis.sourceforge.net/
 Icon:		aegis.gif
 BuildRequires:	bison
+BuildRequires:	curl-devel
+BuildRequires:	libmagic-devel
 BuildRequires:	rpmbuild(macros) >= 1.159
 BuildRequires:	zlib-devel
 Requires(pre):	/bin/id
