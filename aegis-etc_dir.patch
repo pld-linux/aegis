@@ -1,0 +1,21 @@
+diff -Nru aegis-3.18/libaegis/user.c aegis-3.18.new/libaegis/user.c
+--- aegis-3.18/libaegis/user.c	Thu Jul  8 22:36:21 1999
++++ aegis-3.18.new/libaegis/user.c	Sat Mar 22 16:55:45 2003
+@@ -874,8 +874,15 @@
+ 	trace(("user_uconf_get(up = %08lX)\n{\n"/*}*/, up));
+ 	lock_sync(up);
+ 	if (!up->uconf_path)
+-		up->uconf_path =
+-			str_format("%S/.aegisrc", up->home);
++	{
++		char *etc_dir = getenv("ETC_DIR");
++		if (etc_dir)
++			up->uconf_path =
++				str_format("%S/aegisrc", str_from_c(etc_dir));
++		else
++			up->uconf_path =
++				str_format("%S/.aegisrc", up->home);
++  }
+ 	if (!up->uconf_data)
+ 	{
+ 		uconf		data;
