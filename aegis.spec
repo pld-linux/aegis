@@ -46,13 +46,11 @@ gzip -9nf lib/en/{*.{txt,ps},notes/locale.man} README \
 %pre
 %{_sbindir}/groupadd -g 65 aegis
 %{_sbindir}/useradd -u 65 -g 65 -c "Project change supervisor" aegis
-%{_bindir}/update-db
 
 %postun
 if [ $1 = 0 ] ; then
 	%{_sbindir}/userdel aegis
 	%{_sbindir}/groupdel aegis
-	%{_bindir}/update-db
 fi
 
 %clean
