@@ -1,12 +1,12 @@
 Summary:	Project change supervisor
 Summary(pl):	Nadzorca zmian w projektach
 Name:		aegis
-Version:	4.11
+Version:	4.15
 Release:	0.1
 License:	GPL
 Group:		Development/Version Control
 Source0:	http://dl.sourceforge.net/aegis/%{name}-%{version}.tar.gz
-# Source0-md5:	b62956487a6053ca2c3daea05c8c613d
+# Source0-md5:	d31bc04b34849725d3bc244193aa51ca
 Patch0:		%{name}-ugid.patch
 Patch1:		%{name}-etc_dir.patch
 URL:		http://aegis.sourceforge.net/
