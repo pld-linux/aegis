@@ -2,21 +2,21 @@ Summary:	Project change supervisor
 Name:		aegis
 Version:	3.18
 Release:	1
+License:	GPL
 Group:		Development/Version Control
 Group(pl):	Programowanie/Zarz±dzanie wersjami
-Copyright:	GPL
+Source0:	http://www.canb.auug.org.au/~millerp/aegis/%{name}-%{version}.tar.gz
+Patch0:		aegis-ugid.patch
 URL:		http://www.canb.auug.org.au/~millerp/aegis.html
 Icon:		aegis.gif
-Source:		http://www.canb.auug.org.au/~millerp/%{name}-%{version}.tar.gz
-Patch:		aegis-ugid.patch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
-Aegis is a transaction-based software configuration management system.
-It provides a framework within which a team of developers may work
-on many changes to a program independently, and Aegis coordinates
-integrating these changes back into the master source of the program,
-with as little disruption as possible.
+Aegis is a transaction-based software configuration management system. It
+provides a framework within which a team of developers may work on many
+changes to a program independently, and Aegis coordinates integrating these
+changes back into the master source of the program, with as little
+disruption as possible.
 
 %prep
 %setup -q
@@ -31,7 +31,7 @@ rm -rf $RPM_BUILD_ROOT
 
 install -d $RPM_BUILD_ROOT{%{_bindir},%{_datadir}/{aegis,locale},%{_libdir},%{_mandir}/man1}
 
-make install RPM_BUILD_ROOT=$RPM_BUILD_ROOT \
+make install \
 	AEGIS_UID=`id -ru` \
 	AEGIS_GID=`id -rg`
 
@@ -62,7 +62,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc lib/en/*.{ps,txt}.gz lib/en/notes/locale.man.gz lib/en/html README.gz
 
-%dir %attr(755,aegis,aegis) /usr/com/aegis
+%dir %attr(755,aegis,aegis) %{_prefix}/com/aegis
 %dir %attr(755,aegis,aegis) %{_libdir}/aegis
 %dir %{_datadir}/aegis
 
