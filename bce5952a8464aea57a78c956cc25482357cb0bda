@@ -1,0 +1,3 @@
+- don't gzip man pages in spec - rpm does
+- added pl description
+- NOTE: /usr/com is not FHS-compliant
