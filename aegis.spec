@@ -1,4 +1,5 @@
 Summary:	Project change supervisor
+Summary(pl):	Nadzorca zmian w projektach
 Name:		aegis
 Version:	3.18
 Release:	1
