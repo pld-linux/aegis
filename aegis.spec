@@ -56,7 +56,7 @@ install -d $RPM_BUILD_ROOT{%{_bindir},%{_datadir}/{aegis,locale},%{_libdir},%{_m
 %{__make} install \
 	AEGIS_UID=`id -ru` \
 	AEGIS_GID=`id -rg` \
-	HAVE_WEB=yes ScriptRoot=/home/services/httpd/cgi-bin
+	HAVE_WEB=yes ScriptRoot=/srv/httpd/cgi-bin
 
 mv -f $RPM_BUILD_ROOT%{_libdir}/aegis/en $RPM_BUILD_ROOT%{_datadir}/locale
 rm -rf $RPM_BUILD_ROOT%{_datadir}/aegis/man1
