@@ -51,8 +51,8 @@ make
 make RPM_BUILD_ROOT=$RPM_BUILD_ROOT install
 
 %post
-chown -R 3 /usr/com/aegis /usr/lib/aegis /usr/share/aegis
-chgrp -R 3 /usr/com/aegis /usr/lib/aegis /usr/share/aegis
+chown -R 3 /usr/com/aegis %{_libdir}/aegis /usr/share/aegis
+chgrp -R 3 /usr/com/aegis %{_libdir}/aegis /usr/share/aegis
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -61,7 +61,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 
 %dir /usr/com/aegis
-%dir /usr/lib/aegis
+%dir %{_libdir}/aegis
 %dir /usr/share/aegis
 
 %attr(0755,root,root) /usr/bin/aedist
@@ -104,7 +104,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/share/aegis/config.example/sccs
 /usr/share/aegis/cshrc
 
-/usr/lib/aegis/en/LC_MESSAGES/*
+%{_libdir}/aegis/en/LC_MESSAGES/*
 /usr/share/aegis/en/html/*
 %{_mandir}/man[15]/*
 
