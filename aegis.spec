@@ -11,7 +11,16 @@ Source0:	http://www.canb.auug.org.au/~millerp/aegis/%{name}-%{version}.tar.gz
 Patch0:		%{name}-ugid.patch
 URL:		http://www.canb.auug.org.au/~millerp/aegis.html
 Icon:		aegis.gif
+BuildRequires:	zlib-devel
+Prereq:		/usr/sbin/useradd
+Prereq:		/usr/sbin/groupadd
+Prereq:		/usr/sbin/userdel
+Prereq:		/usr/sbin/groupdel
+Prereq:		/usr/bin/getgid
+Prereq:		/bin/id
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+
+%define		_sharedstatedir		/var/lib
 
 %description
 Aegis is a transaction-based software configuration management system.
@@ -41,7 +50,8 @@ install -d $RPM_BUILD_ROOT{%{_bindir},%{_datadir}/{aegis,locale},%{_libdir},%{_m
 
 %{__make} install \
 	AEGIS_UID=`id -ru` \
-	AEGIS_GID=`id -rg`
+	AEGIS_GID=`id -rg` \
+	HAVE_WEB=yes ScriptRoot=/home/httpd/cgi-bin
 
 mv -f $RPM_BUILD_ROOT%{_libdir}/aegis/en $RPM_BUILD_ROOT%{_datadir}/locale
 rm -rf $RPM_BUILD_ROOT%{_datadir}/aegis/man1
@@ -54,21 +64,35 @@ gzip -9nf lib/en/{*.{txt,ps},notes/locale.man} README
 rm -rf $RPM_BUILD_ROOT
 
 %pre
-%{_sbindir}/groupadd -g 65 aegis
-%{_sbindir}/useradd -u 65 -g 65 -c "Project change supervisor" aegis
+if [ -n "`/usr/bin/getgid aegis`" ]; then
+	if [ "`/usr/bin/getgid aegis`" != "65" ]; then
+		echo "Warning: group aegis haven't gid=65. Correct this before installing aegis" 1>&2
+		exit 1
+	fi
+else
+	/usr/sbin/groupadd -g 65 aegis
+fi
+if [ -n "`/bin/id -u aegis 2>/dev/null`" ]; then
+	if [ "`/bin/id -u aegis`" != "65" ]; then
+		echo "Warning: user aegis haven't uid=65. Correct this before installing aegis" 1>&2
+		exit 1
+	fi
+else
+	/usr/sbin/useradd -u 65 -g 65 -c "Project change supervisor" aegis 1>&2
+fi
 
 %postun
-if [ $1 = 0 ] ; then
-	%{_sbindir}/userdel aegis
-	%{_sbindir}/groupdel aegis
+if [ "$1" = "0" ] ; then
+	/usr/sbin/userdel aegis 2>/dev/null
+	/usr/sbin/groupdel aegis 2>/dev/null
 fi
 
 %files
 %defattr(644,root,root,755)
 %doc lib/en/*.{ps,txt}.gz lib/en/notes/locale.man.gz lib/en/html README.gz
 
-%dir %attr(775,root,aegis) %{_prefix}/com/aegis
-%dir %attr(775,root,aegis) %{_libdir}/aegis
+%dir %attr(775,root,aegis) %{_sharedstatedir}/aegis
+%dir %attr(755,root,aegis) %{_libdir}/aegis
 %dir %{_datadir}/aegis
 
 %attr(0755,root,root) %{_bindir}/aedist
