@@ -24,7 +24,7 @@ with as little disruption as possible.
 %patch -p1
 
 %build
-%configure
+%configure2_13
 %{__make}
 
 %install
