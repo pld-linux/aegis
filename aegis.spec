@@ -2,7 +2,7 @@ Summary:	Project change supervisor
 Summary(pl):	Nadzorca zmian w projektach
 Name:		aegis
 Version:	3.18
-Release:	1
+Release:	2
 License:	GPL
 Group:		Development/Version Control
 Source0:	http://www.canb.auug.org.au/~millerp/aegis/%{name}-%{version}.tar.gz
@@ -10,12 +10,12 @@ Patch0:		%{name}-ugid.patch
 URL:		http://www.canb.auug.org.au/~millerp/aegis.html
 Icon:		aegis.gif
 BuildRequires:	zlib-devel
-Prereq:		/usr/sbin/useradd
-Prereq:		/usr/sbin/groupadd
-Prereq:		/usr/sbin/userdel
-Prereq:		/usr/sbin/groupdel
-Prereq:		/usr/bin/getgid
-Prereq:		/bin/id
+Requires(pre):	/usr/bin/getgid
+Requires(pre):	/bin/id
+Requires(pre):	/usr/sbin/groupadd
+Requires(pre):	/usr/sbin/useradd
+Requires(postun):	/usr/sbin/userdel
+Requires(postun):	/usr/sbin/groupdel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_sharedstatedir		/var/lib
@@ -56,15 +56,13 @@ rm -rf $RPM_BUILD_ROOT%{_datadir}/aegis/man1
 rm -rf $RPM_BUILD_ROOT%{_datadir}/aegis/en
 rm -f lib/en/html/.mkdir*
 
-gzip -9nf lib/en/{*.{txt,ps},notes/locale.man} README
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %pre
 if [ -n "`/usr/bin/getgid aegis`" ]; then
 	if [ "`/usr/bin/getgid aegis`" != "65" ]; then
-		echo "Warning: group aegis haven't gid=65. Correct this before installing aegis" 1>&2
+		echo "Error: group aegis doesn't have gid=65. Correct this before installing aegis." 1>&2
 		exit 1
 	fi
 else
@@ -72,7 +70,7 @@ else
 fi
 if [ -n "`/bin/id -u aegis 2>/dev/null`" ]; then
 	if [ "`/bin/id -u aegis`" != "65" ]; then
-		echo "Warning: user aegis haven't uid=65. Correct this before installing aegis" 1>&2
+		echo "Error: user aegis doesn't have uid=65. Correct this before installing aegis." 1>&2
 		exit 1
 	fi
 else
@@ -87,7 +85,7 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc lib/en/*.{ps,txt}.gz lib/en/notes/locale.man.gz lib/en/html README.gz
+%doc lib/en/*.{ps,txt} lib/en/notes/locale.man lib/en/html README
 
 %dir %attr(775,root,aegis) %{_sharedstatedir}/aegis
 %dir %attr(755,root,aegis) %{_libdir}/aegis
