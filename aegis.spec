@@ -16,13 +16,16 @@ Patch1:		%{name}-etc_dir.patch
 URL:		http://aegis.sourceforge.net/
 Icon:		aegis.gif
 BuildRequires:	bison
+BuildRequires:	rpmbuild(macros) >= 1.159
 BuildRequires:	zlib-devel
-Requires(pre):	/usr/bin/getgid
 Requires(pre):	/bin/id
+Requires(pre):	/usr/bin/getgid
 Requires(pre):	/usr/sbin/groupadd
 Requires(pre):	/usr/sbin/useradd
-Requires(postun):	/usr/sbin/userdel
 Requires(postun):	/usr/sbin/groupdel
+Requires(postun):	/usr/sbin/userdel
+Provides:	group(aegis)
+Provides:	user(aegis)
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_sharedstatedir		/var/lib
@@ -69,7 +72,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %pre
 if [ -n "`/usr/bin/getgid aegis`" ]; then
-	if [ "`/usr/bin/getgid aegis`" != "65" ]; then
+	if [ "`/usr/bin/getgid aegis`" != 65 ]; then
 		echo "Error: group aegis doesn't have gid=65. Correct this before installing aegis." 1>&2
 		exit 1
 	fi
@@ -77,7 +80,7 @@ else
 	/usr/sbin/groupadd -g 65 aegis
 fi
 if [ -n "`/bin/id -u aegis 2>/dev/null`" ]; then
-	if [ "`/bin/id -u aegis`" != "65" ]; then
+	if [ "`/bin/id -u aegis`" != 65 ]; then
 		echo "Error: user aegis doesn't have uid=65. Correct this before installing aegis." 1>&2
 		exit 1
 	fi
@@ -87,8 +90,8 @@ fi
 
 %postun
 if [ "$1" = "0" ] ; then
-	/usr/sbin/userdel aegis 2>/dev/null
-	/usr/sbin/groupdel aegis 2>/dev/null
+	%userremove aegis
+	%groupremove aegis
 fi
 
 %files
