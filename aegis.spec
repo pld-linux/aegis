@@ -64,11 +64,11 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/aegis
 %dir %{_datadir}/aegis
 
-%attr(0755,root,root) /usr/bin/aedist
-%attr(0755,root,root) /usr/bin/aefind
-%attr(4755,root,root) /usr/bin/aegis
-%attr(0755,root,root) /usr/bin/aerect
-%attr(0755,root,root) /usr/bin/aereport
+%attr(0755,root,root) %{_bindir}/aedist
+%attr(0755,root,root) %{_bindir}/aefind
+%attr(4755,root,root) %{_bindir}/aegis
+%attr(0755,root,root) %{_bindir}/aerect
+%attr(0755,root,root) %{_bindir}/aereport
 
 %attr(0755,root,root) /home/httpd/cgi-bin/aegis.cgi
 %attr(0755,root,root) %{_datadir}/aegis/db_forced.sh
