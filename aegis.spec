@@ -1,12 +1,16 @@
+#
+# TODO:
+#	- check %%files for missing items
+#
 Summary:	Project change supervisor
 Summary(pl):	Nadzorca zmian w projektach
 Name:		aegis
-Version:	4.15
+Version:	4.16
 Release:	0.1
 License:	GPL
 Group:		Development/Version Control
 Source0:	http://dl.sourceforge.net/aegis/%{name}-%{version}.tar.gz
-# Source0-md5:	d31bc04b34849725d3bc244193aa51ca
+# Source0-md5:	134d01cca1e7173d4396884df5b669eb
 Patch0:		%{name}-ugid.patch
 Patch1:		%{name}-etc_dir.patch
 URL:		http://aegis.sourceforge.net/
