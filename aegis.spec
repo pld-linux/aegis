@@ -48,11 +48,7 @@ CFLAGS="$RPM_OPT_FLAGS" LDFLAGS=-s
 make
 
 %install
-make RPM_BUILD_ROOT=$RPM_BUILD_ROOT install
-
-%post
-chown -R 3 /usr/com/aegis %{_libdir}/aegis %{_datadir}/aegis
-chgrp -R 3 /usr/com/aegis %{_libdir}/aegis %{_datadir}/aegis
+make install RPM_BUILD_ROOT=$RPM_BUILD_ROOT
 
 %clean
 rm -rf $RPM_BUILD_ROOT
