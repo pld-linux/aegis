@@ -7,6 +7,8 @@ License:	GPL
 Group:		Development/Version Control
 Source0:	http://www.canb.auug.org.au/~millerp/aegis/%{name}-%{version}.tar.gz
 Patch0:		%{name}-ugid.patch
+Patch1:		%{name}-home_etc.patch
+Patch2:		%{name}-pmake.patch
 URL:		http://www.canb.auug.org.au/~millerp/aegis.html
 Icon:		aegis.gif
 BuildRequires:	zlib-devel
@@ -35,7 +37,9 @@ koordynuje integracjê tych zmian w g³ówne ¼ród³a programu.
 
 %prep
 %setup -q
-%patch -p1
+%patch0 -p1
+%patch1 -p1
+%patch2 -p1
 
 %build
 %configure2_13
