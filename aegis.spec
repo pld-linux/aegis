@@ -48,7 +48,9 @@ CFLAGS="$RPM_OPT_FLAGS" LDFLAGS=-s
 make
 
 %install
-make install RPM_BUILD_ROOT=$RPM_BUILD_ROOT
+make install RPM_BUILD_ROOT=$RPM_BUILD_ROOT \
+	AEGIS_UID=`id -ru` \
+	AEGIS_GID=`id -rg`
 
 %clean
 rm -rf $RPM_BUILD_ROOT
