@@ -60,8 +60,8 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc lib/en/*.{ps,txt}.gz lib/en/notes/locale.man.gz lib/en/html README.gz
 
-%dir %attr(755,aegis,aegis) %{_prefix}/com/aegis
-%dir %attr(755,aegis,aegis) %{_libdir}/aegis
+%dir %attr(775,root,aegis) %{_prefix}/com/aegis
+%dir %attr(775,root,aegis) %{_libdir}/aegis
 %dir %{_datadir}/aegis
 
 %attr(0755,root,root) %{_bindir}/aedist
