@@ -51,8 +51,8 @@ make
 make RPM_BUILD_ROOT=$RPM_BUILD_ROOT install
 
 %post
-chown -R 3 /usr/com/aegis %{_libdir}/aegis /usr/share/aegis
-chgrp -R 3 /usr/com/aegis %{_libdir}/aegis /usr/share/aegis
+chown -R 3 /usr/com/aegis %{_libdir}/aegis %{_datadir}/aegis
+chgrp -R 3 /usr/com/aegis %{_libdir}/aegis %{_datadir}/aegis
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -62,7 +62,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %dir /usr/com/aegis
 %dir %{_libdir}/aegis
-%dir /usr/share/aegis
+%dir %{_datadir}/aegis
 
 %attr(0755,root,root) /usr/bin/aedist
 %attr(0755,root,root) /usr/bin/aefind
@@ -71,71 +71,71 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0755,root,root) /usr/bin/aereport
 
 %attr(0755,root,root) /home/httpd/cgi-bin/aegis.cgi
-%attr(0755,root,root) /usr/share/aegis/db_forced.sh
-%attr(0755,root,root) /usr/share/aegis/de.inews.sh
-%attr(0755,root,root) /usr/share/aegis/de.sh
-%attr(0755,root,root) /usr/share/aegis/deu.inews.sh
-%attr(0755,root,root) /usr/share/aegis/deu.sh
-%attr(0755,root,root) /usr/share/aegis/if.inews.sh
-%attr(0755,root,root) /usr/share/aegis/if.sh
-%attr(0755,root,root) /usr/share/aegis/integrate_q.sh
-%attr(0755,root,root) /usr/share/aegis/ip.inews.sh
-%attr(0755,root,root) /usr/share/aegis/ip.sh
-%attr(0755,root,root) /usr/share/aegis/remind/awt_dvlp.sh
-%attr(0755,root,root) /usr/share/aegis/remind/awt_intgrtn.sh
-%attr(0755,root,root) /usr/share/aegis/remind/bng_dvlpd.sh
-%attr(0755,root,root) /usr/share/aegis/remind/bng_rvwd.sh
-%attr(0755,root,root) /usr/share/aegis/rf.inews.sh
-%attr(0755,root,root) /usr/share/aegis/rf.sh
-%attr(0755,root,root) /usr/share/aegis/rp.inews.sh
-%attr(0755,root,root) /usr/share/aegis/rp.sh
-%attr(0755,root,root) /usr/share/aegis/rpu.inews.sh
-%attr(0755,root,root) /usr/share/aegis/rpu.sh
+%attr(0755,root,root) %{_datadir}/aegis/db_forced.sh
+%attr(0755,root,root) %{_datadir}/aegis/de.inews.sh
+%attr(0755,root,root) %{_datadir}/aegis/de.sh
+%attr(0755,root,root) %{_datadir}/aegis/deu.inews.sh
+%attr(0755,root,root) %{_datadir}/aegis/deu.sh
+%attr(0755,root,root) %{_datadir}/aegis/if.inews.sh
+%attr(0755,root,root) %{_datadir}/aegis/if.sh
+%attr(0755,root,root) %{_datadir}/aegis/integrate_q.sh
+%attr(0755,root,root) %{_datadir}/aegis/ip.inews.sh
+%attr(0755,root,root) %{_datadir}/aegis/ip.sh
+%attr(0755,root,root) %{_datadir}/aegis/remind/awt_dvlp.sh
+%attr(0755,root,root) %{_datadir}/aegis/remind/awt_intgrtn.sh
+%attr(0755,root,root) %{_datadir}/aegis/remind/bng_dvlpd.sh
+%attr(0755,root,root) %{_datadir}/aegis/remind/bng_rvwd.sh
+%attr(0755,root,root) %{_datadir}/aegis/rf.inews.sh
+%attr(0755,root,root) %{_datadir}/aegis/rf.sh
+%attr(0755,root,root) %{_datadir}/aegis/rp.inews.sh
+%attr(0755,root,root) %{_datadir}/aegis/rp.sh
+%attr(0755,root,root) %{_datadir}/aegis/rpu.inews.sh
+%attr(0755,root,root) %{_datadir}/aegis/rpu.sh
 
-/usr/share/aegis/aegis.icon
-/usr/share/aegis/aegis.mask
-/usr/share/aegis/aegis.pgm
-/usr/share/aegis/config.example/architecture
-/usr/share/aegis/config.example/cake
-/usr/share/aegis/config.example/cook
-/usr/share/aegis/config.example/fhist
-/usr/share/aegis/config.example/make
-/usr/share/aegis/config.example/rcs
-/usr/share/aegis/config.example/sccs
-/usr/share/aegis/cshrc
+%{_datadir}/aegis/aegis.icon
+%{_datadir}/aegis/aegis.mask
+%{_datadir}/aegis/aegis.pgm
+%{_datadir}/aegis/config.example/architecture
+%{_datadir}/aegis/config.example/cake
+%{_datadir}/aegis/config.example/cook
+%{_datadir}/aegis/config.example/fhist
+%{_datadir}/aegis/config.example/make
+%{_datadir}/aegis/config.example/rcs
+%{_datadir}/aegis/config.example/sccs
+%{_datadir}/aegis/cshrc
 
 %{_libdir}/aegis/en/LC_MESSAGES/*
-/usr/share/aegis/en/html/*
+%{_datadir}/aegis/en/html/*
 %{_mandir}/man[15]/*
 
-/usr/share/aegis/en/notes/locale.man
-/usr/share/aegis/profile
-/usr/share/aegis/report.index
-/usr/share/aegis/report/*
+%{_datadir}/aegis/en/notes/locale.man
+%{_datadir}/aegis/profile
+%{_datadir}/aegis/report.index
+%{_datadir}/aegis/report/*
 
 #%files txtdocs
-#%attr(0644,root,root) /usr/share/aegis/en/auug93.txt
-#%attr(0644,root,root) /usr/share/aegis/en/auug96.txt
-#%attr(0644,root,root) /usr/share/aegis/en/auug97.txt
-#%attr(0644,root,root) /usr/share/aegis/en/faq.txt
-#%attr(0644,root,root) /usr/share/aegis/en/refman.txt
-#%attr(0644,root,root) /usr/share/aegis/en/user-guide.txt
+#%attr(0644,root,root) %{_datadir}/aegis/en/auug93.txt
+#%attr(0644,root,root) %{_datadir}/aegis/en/auug96.txt
+#%attr(0644,root,root) %{_datadir}/aegis/en/auug97.txt
+#%attr(0644,root,root) %{_datadir}/aegis/en/faq.txt
+#%attr(0644,root,root) %{_datadir}/aegis/en/refman.txt
+#%attr(0644,root,root) %{_datadir}/aegis/en/user-guide.txt
 
 #%files psdocs
-#%attr(0644,root,root) /usr/share/aegis/en/auug93.ps
-#%attr(0644,root,root) /usr/share/aegis/en/auug96.ps
-#%attr(0644,root,root) /usr/share/aegis/en/auug97.ps
-#%attr(0644,root,root) /usr/share/aegis/en/faq.ps
-#%attr(0644,root,root) /usr/share/aegis/en/refman.ps
-#%attr(0644,root,root) /usr/share/aegis/en/user-guide.ps
+#%attr(0644,root,root) %{_datadir}/aegis/en/auug93.ps
+#%attr(0644,root,root) %{_datadir}/aegis/en/auug96.ps
+#%attr(0644,root,root) %{_datadir}/aegis/en/auug97.ps
+#%attr(0644,root,root) %{_datadir}/aegis/en/faq.ps
+#%attr(0644,root,root) %{_datadir}/aegis/en/refman.ps
+#%attr(0644,root,root) %{_datadir}/aegis/en/user-guide.ps
 
 #%files dvidocs
-#%attr(0644,root,root) /usr/share/aegis/en/auug93.dvi
-#%attr(0644,root,root) /usr/share/aegis/en/auug96.dvi
-#%attr(0644,root,root) /usr/share/aegis/en/auug97.dvi
-#%attr(0644,root,root) /usr/share/aegis/en/faq.dvi
-#%attr(0644,root,root) /usr/share/aegis/en/refman.dvi
-#%attr(0644,root,root) /usr/share/aegis/en/user-guide.dvi
+#%attr(0644,root,root) %{_datadir}/aegis/en/auug93.dvi
+#%attr(0644,root,root) %{_datadir}/aegis/en/auug96.dvi
+#%attr(0644,root,root) %{_datadir}/aegis/en/auug97.dvi
+#%attr(0644,root,root) %{_datadir}/aegis/en/faq.dvi
+#%attr(0644,root,root) %{_datadir}/aegis/en/refman.dvi
+#%attr(0644,root,root) %{_datadir}/aegis/en/user-guide.dvi
 
 %changelog
 * Fri Apr  2 1999 Micha³ Kuratczyk <kura@pld.org.pl>
