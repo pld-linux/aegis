@@ -14,7 +14,7 @@ Icon:		aegis.gif
 BuildRequires:	bison
 BuildRequires:	curl-devel
 BuildRequires:	libmagic-devel
-BuildRequires:	rpmbuild(macros) >= 1.159
+BuildRequires:	rpmbuild(macros) >= 1.202
 BuildRequires:	zlib-devel
 Requires(pre):	/bin/id
 Requires(pre):	/usr/bin/getgid
@@ -69,22 +69,8 @@ rm -f lib/en/html/.mkdir*
 rm -rf $RPM_BUILD_ROOT
 
 %pre
-if [ -n "`/usr/bin/getgid aegis`" ]; then
-	if [ "`/usr/bin/getgid aegis`" != 65 ]; then
-		echo "Error: group aegis doesn't have gid=65. Correct this before installing aegis." 1>&2
-		exit 1
-	fi
-else
-	/usr/sbin/groupadd -g 65 aegis
-fi
-if [ -n "`/bin/id -u aegis 2>/dev/null`" ]; then
-	if [ "`/bin/id -u aegis`" != 65 ]; then
-		echo "Error: user aegis doesn't have uid=65. Correct this before installing aegis." 1>&2
-		exit 1
-	fi
-else
-	/usr/sbin/useradd -u 65 -g 65 -c "Project change supervisor" aegis 1>&2
-fi
+%groupadd -g 65 aegis
+%useradd -u 65 -g 65 -c "Project change supervisor" aegis
 
 %postun
 if [ "$1" = "0" ] ; then
