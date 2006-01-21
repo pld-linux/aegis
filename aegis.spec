@@ -10,7 +10,6 @@ Source0:	http://dl.sourceforge.net/aegis/%{name}-%{version}.tar.gz
 Patch0:		%{name}-ugid.patch
 Patch1:		%{name}-etc_dir.patch
 URL:		http://aegis.sourceforge.net/
-Icon:		aegis.gif
 BuildRequires:	bison
 BuildRequires:	curl-devel
 BuildRequires:	libmagic-devel
