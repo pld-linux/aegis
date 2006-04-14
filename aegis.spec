@@ -2,7 +2,7 @@ Summary:	Project change supervisor
 Summary(pl):	Nadzorca zmian w projektach
 Name:		aegis
 Version:	4.16
-Release:	2
+Release:	3
 License:	GPL
 Group:		Development/Version Control
 Source0:	http://dl.sourceforge.net/aegis/%{name}-%{version}.tar.gz
