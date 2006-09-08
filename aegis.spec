@@ -2,7 +2,7 @@ Summary:	Project change supervisor
 Summary(pl):	Nadzorca zmian w projektach
 Name:		aegis
 Version:	4.16
-Release:	3
+Release:	4
 License:	GPL
 Group:		Development/Version Control
 Source0:	http://dl.sourceforge.net/aegis/%{name}-%{version}.tar.gz
@@ -15,12 +15,12 @@ BuildRequires:	curl-devel
 BuildRequires:	libmagic-devel
 BuildRequires:	rpmbuild(macros) >= 1.202
 BuildRequires:	zlib-devel
+Requires(postun):	/usr/sbin/groupdel
+Requires(postun):	/usr/sbin/userdel
 Requires(pre):	/bin/id
 Requires(pre):	/usr/bin/getgid
 Requires(pre):	/usr/sbin/groupadd
 Requires(pre):	/usr/sbin/useradd
-Requires(postun):	/usr/sbin/groupdel
-Requires(postun):	/usr/sbin/userdel
 Provides:	group(aegis)
 Provides:	user(aegis)
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
