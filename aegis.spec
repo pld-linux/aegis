@@ -1,6 +1,6 @@
 # TODO: fix ScriptRoot
 Summary:	Project change supervisor
-Summary(pl.UTF-8):   Nadzorca zmian w projektach
+Summary(pl.UTF-8):	Nadzorca zmian w projektach
 Name:		aegis
 Version:	4.16
 Release:	4
