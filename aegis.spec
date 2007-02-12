@@ -1,6 +1,6 @@
 # TODO: fix ScriptRoot
 Summary:	Project change supervisor
-Summary(pl):	Nadzorca zmian w projektach
+Summary(pl.UTF-8):   Nadzorca zmian w projektach
 Name:		aegis
 Version:	4.16
 Release:	4
@@ -35,11 +35,11 @@ many changes to a program independently, and Aegis coordinates
 integrating these changes back into the master source of the program,
 with as little disruption as possible.
 
-%description -l pl
-Aegis jest transakcyjnie dzia³aj±cym programem do zarz±dzania
-konfiguracj±. Daje ¶rodowisko w którym za³oga developerów mo¿e
-pracowaæ nad wieloma zmianami w programie niezale¿nie, a Aegis
-koordynuje integracjê tych zmian w g³ówne ¼ród³a programu.
+%description -l pl.UTF-8
+Aegis jest transakcyjnie dziaÅ‚ajÄ…cym programem do zarzÄ…dzania
+konfiguracjÄ…. Daje Å›rodowisko w ktÃ³rym zaÅ‚oga developerÃ³w moÅ¼e
+pracowaÄ‡ nad wieloma zmianami w programie niezaleÅ¼nie, a Aegis
+koordynuje integracjÄ™ tych zmian w gÅ‚Ã³wne ÅºrÃ³dÅ‚a programu.
 
 %prep
 %setup -q
